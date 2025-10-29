@@ -1,0 +1,18 @@
+{
+    "entryFile": "server.ts",
+    "noImplicitAdditionalProperties": "throw-on-extras",
+    "controllerPathGlobs": [
+        "src/**/*Controller.ts"
+    ],
+    "spec": {
+        "outputDirectory": "src/swagger",
+        "specVersion": 3
+    },
+    "routes": {
+        "routesDir": "src/routes",
+        "iocModule": "src/di.ts"
+    },
+    "ignore": [
+        "**/node_modules/@types/**"
+    ]
+}

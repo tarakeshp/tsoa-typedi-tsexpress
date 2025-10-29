@@ -1,0 +1,277 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"CreateUserDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Error": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ServiceException": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"httpStatus": {
+						"type": "number",
+						"format": "double"
+					},
+					"code": {
+						"type": "string"
+					},
+					"innerException": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/Error"
+							}
+						],
+						"nullable": true,
+						"default": null
+					},
+					"origin": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"httpStatus",
+					"code",
+					"origin"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NotFoundException": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"httpStatus": {
+						"type": "number",
+						"format": "double"
+					},
+					"code": {
+						"type": "string"
+					},
+					"innerException": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/Error"
+							}
+						],
+						"nullable": true,
+						"default": null
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"httpStatus",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GenericException": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"httpStatus": {
+						"type": "number",
+						"format": "double"
+					},
+					"code": {
+						"type": "string"
+					},
+					"innerException": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/Error"
+							}
+						],
+						"nullable": true,
+						"default": null
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"httpStatus",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"HttpException": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ServiceException"
+					},
+					{
+						"$ref": "#/components/schemas/NotFoundException"
+					},
+					{
+						"$ref": "#/components/schemas/GenericException"
+					}
+				]
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "tsoa-typedi",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/user": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreateUserDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ping": {
+			"get": {
+				"operationId": "GetPing",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/exception": {
+			"get": {
+				"operationId": "ApplyException",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"type": "string"
+										},
+										{
+											"$ref": "#/components/schemas/HttpException"
+										},
+										{
+											"$ref": "#/components/schemas/Error"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
