@@ -176,10 +176,13 @@
 	"info": {
 		"title": "tsoa-typedi",
 		"version": "1.0.0",
+		"description": "tsoa, typedi, express, typescript",
 		"license": {
 			"name": "ISC"
 		},
-		"contact": {}
+		"contact": {
+			"name": "Tharakesh Pulikonda"
+		}
 	},
 	"paths": {
 		"/user": {
